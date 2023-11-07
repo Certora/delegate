@@ -1,29 +1,6 @@
-# Delegate audit details
-
-- Total Prize Pool: $50,000 USDC
-  - HM awards: $34,237.50 USDC
-  - Analysis awards: $2,075 USDC
-  - QA awards: $1037.50 USDC
-  - Bot Race awards: $3,112.50 USDC
-  - Gas awards: $1,037.50 USDC
-  - Judge awards: $5,000 USDC
-  - Lookout awards: $3,000 USDC
-  - Scout awards: $500 USDC
-- Join [C4 Discord](https://discord.gg/code4rena) to register
-- Submit findings [using the C4 form](https://code4rena.com/contests/2023-09-delegate/submit)
-- [Read our guidelines for more details](https://docs.code4rena.com/roles/wardens)
-- Starts September 5, 2023 20:00 UTC
-- Ends September 11, 2023 20:00 UTC
-
-## Automated Findings / Publicly Known Issues
-
-Automated findings output for the audit can be found [here](https://github.com/code-423n4/2023-09-delegate/blob/main/bot-report.md) within 24 hours of audit opening.
-
-*Note for C4 wardens: Anything included in the automated findings output is considered a publicly known issue and is ineligible for awards.*
-
 # Overview
 
-This contest covers two key pieces:
+This review covers two key pieces:
 
 - v2 of the delegate registry
 - v2 of the delegate marketplace
@@ -38,18 +15,18 @@ The delegate marketplace consists of three core contracts: the DelegateToken, th
 
 | Contract | SLOC | Purpose | Libraries used |  
 | ----------- | ----------- | ----------- | ----------- |
-| [lib/delegate-registry/src/DelegateRegistry.sol](https://github.com/delegatexyz/delegate-registry/blob/6d1254de793ccc40134f9bec0b7cb3d9c3632bc1/src/DelegateRegistry.sol) | 364 | v2 of the delegate registry | ??? |
-| [lib/delegate-registry/src/libraries/RegistryHashes.sol](https://github.com/delegatexyz/delegate-registry/blob/6d1254de793ccc40134f9bec0b7cb3d9c3632bc1/src/libraries/RegistryHashes.sol) | 135 | Helper library for registry hash calculation | ??? |
-| [lib/delegate-registry/src/libraries/RegistryStorage.sol](https://github.com/delegatexyz/delegate-registry/blob/6d1254de793ccc40134f9bec0b7cb3d9c3632bc1/src/libraries/RegistryStorage.sol) | 31 | Helper library for registry storage layout | ??? |
-| [lib/delegate-registry/src/libraries/RegistryOps.sol](https://github.com/delegatexyz/delegate-registry/blob/6d1254de793ccc40134f9bec0b7cb3d9c3632bc1/src/libraries/RegistryOps.sol) | 18 | Helper library for branchless boolean ops | ??? |
-| [src/DelegateToken.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/DelegateToken.sol) | 288 | Represent delegate rights as a transferrable ERC721 | ??? |
-| [src/PrincipalToken.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/PrincipalToken.sol) | 43 | Represent the rights to claim the deposited token as a transferrable ERC721 | ??? |
-| [src/CreateOfferer.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/CreateOfferer.sol) | 171 | Seaport Contract Offerer to enable gasless listings of DTs before they're created | ??? |
-| [src/libraries/CreateOffererLib.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/libraries/CreateOffererLib.sol) | 267 | Helper library for CreateOfferer | ??? |
-| [src/libraries/DelegateTokenLib.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/libraries/DelegateTokenLib.sol) | 90 | Helper library for DelegateToken | ??? |
-| [src/libraries/DelegateTokenRegistryHelpers.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/libraries/DelegateTokenRegistryHelpers.sol) | 219 | Helper library for Delegate Token registry hitchhiking | ??? |
-| [src/libraries/DelegateTokenStorageHelpers.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/libraries/DelegateTokenStorageHelpers.sol) | 125 | Helper library for Delegate Token registry hitchhiking | ??? |
-| [src/libraries/DelegateTokenTransferHelpers.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/libraries/DelegateTokenTransferHelpers.sol) | 73 | Helper library for Delegate Token ERC20/721/1155 transfers | ??? |
+| DelegateRegistry.sol | 364 | v2 of the delegate registry | ??? |
+| RegistryHashes.sol | 135 | Helper library for registry hash calculation | ??? |
+| RegistryStorage.sol | 31 | Helper library for registry storage layout | ??? |
+| RegistryOps.sol | 18 | Helper library for branchless boolean ops | ??? |
+| DelegateToken.sol | 288 | Represent delegate rights as a transferrable ERC721 | ??? |
+| PrincipalToken.sol | 43 | Represent the rights to claim the deposited token as a transferrable ERC721 | ??? |
+| CreateOfferer.sol | 171 | Seaport Contract Offerer to enable gasless listings of DTs before they're created | ??? |
+| CreateOffererLib.sol | 267 | Helper library for CreateOfferer | ??? |
+| DelegateTokenLib.sol | 90 | Helper library for DelegateToken | ??? |
+| DelegateTokenRegistryHelpers.sol | 219 | Helper library for Delegate Token registry hitchhiking | ??? |
+| DelegateTokenStorageHelpers.sol | 125 | Helper library for Delegate Token registry hitchhiking | ??? |
+| DelegateTokenTransferHelpers.sol | 73 | Helper library for Delegate Token ERC20/721/1155 transfers | ??? |
 
 ## Out of scope
 
@@ -58,38 +35,16 @@ The following contracts are out of scope:
 - Any deployment or upgrade scripts are out of scope (but can be used to test the contracts in scope).
 - Files in test/, contracts/test/ or src/test/ are out of scope (but can be used to test the contracts in scope).
 - External libraries (@openzeppelin/*, @seaport/*)
-- [src/MarketMetadata.sol](https://github.com/code-423n4/2023-09-delegate/blob/main/src/MarketMetadata.sol)
-- [lib/delegate-registry/src/singlesig/Singlesig.sol](https://github.com/delegatexyz/delegate-registry/blob/6d1254de793ccc40134f9bec0b7cb3d9c3632bc1/src/singlesig/Singlesig.sol)
+- MarketMetadata.sol
+- Singlesig.sol
 - lib/delegate-registry/src/examples/*.sol
-
-## Scoping Details
-
-```
-- If you have a public code repo, please share it here:  
-- How many contracts are in scope?:   12
-- Total SLoC for these contracts?:  ~1500
-- How many external imports are there?: 2 
-- How many separate interfaces and struct definitions are there for the contracts within scope?:  ~10
-- Does most of your code generally use composition or inheritance?:   Composition
-- How many external calls?:   ~5
-- What is the overall line coverage percentage provided by your tests?: 80%
-- Is this an upgrade of an existing system?: True
-- Check all that apply (e.g. timelock, NFT, AMM, ERC20, rollups, etc.): ERC-20 Token, Non ERC-20 Token
-- Is there a need to understand a separate part of the codebase / get context in order to audit this part of the protocol?:  False 
-- Please describe required context:   n/a
-- Does it use an oracle?:  No
-- Describe any novel or unique curve logic or mathematical models your code uses: None
-- Is this either a fork of or an alternate implementation of another project?: False  
-- Does it use a side-chain?: False
-- Describe any specific areas you would like addressed: Please focus on registry correctness as that intersects with the marketplace
-```
 
 ## Setup
 
 Either clone with `--recurse`:
 
 ```bash
-git clone --recurse https://github.com/code-423n4/2023-09-delegate.git
+git clone --recurse 2023-09-delegate.git
 ```
 
 Use one of the following if `--recurse` was forgotten:
